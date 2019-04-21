@@ -143,8 +143,8 @@
 		},
 		"stg_weapon": {
 			"type": "image",
-			"width": 128,
-			"height": 128,
+			"width": 92,
+			"height": 92,
 			"path": "image/stg_weapon.png"
 		},
 		"title_logo": {
@@ -856,7 +856,7 @@
 			"type": "audio",
 			"path": "audio/bgm/bgm_002_BPM222/bgm_002_BPM222",
 			"systemId": "music",
-			"duration": 8650
+			"duration": 121513
 		},
 		"se_No8_RollCount2": {
 			"type": "audio",
@@ -941,6 +941,12 @@
 			"path": "audio/se/se_real58/se_real58",
 			"systemId": "sound",
 			"duration": 608
+		},
+		"title_button": {
+			"type": "image",
+			"width": 250,
+			"height": 143,
+			"path": "image/title_button.png"
 		}
 	},
 	"globalScripts": [

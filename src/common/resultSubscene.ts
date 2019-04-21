@@ -10,6 +10,9 @@ import { audioUtil } from "../util/audioUtil";
 import { AssetInfoType } from "../commonTypes/assetInfoType";
 import { Subscene } from "../commonNicowariGame/subscene";
 
+const atsumaru = (window as any).RPGAtsumaru;
+const boardId = 1;
+
 /**
  * リザルトサブシーンの処理と表示を行うクラス
  */
@@ -29,6 +32,8 @@ export class ResultSubscene extends Subscene {
 	private offsetY: number;
 	/** tips画像リスト */
 	private tipsImgList: string[] = [];
+	/** タイトルへ戻るボタン */
+	private titleButtonSprite: g.Sprite;
 
 	constructor(_scene: g.Scene) {
 		super(_scene);
@@ -39,6 +44,23 @@ export class ResultSubscene extends Subscene {
 	 * @override
 	 */
 	init(): void {
+		this.titleButtonSprite = new g.Sprite({
+			scene: this.scene,
+			src: this.scene.assets["title_button"] as g.ImageAsset,
+			width: 0.7 * 250,
+			height: 0.7 * 143,
+			srcWidth: 250,
+			srcHeight: 143,
+			x: (g.game.width - 0.7 * 250) / 2,
+			y: 0.725 * g.game.height,
+			hidden: true,
+			touchable: true
+		});
+		this.titleButtonSprite.pointUp.handle(this,(e: any) => {
+			this.titleButtonSprite.hide();
+			this.requestedNextSubscene.fire();
+		});
+		this.scene.append(this.titleButtonSprite);
 		this.requestedNextSubscene = new g.Trigger<void>();
 
 		const game = this.scene.game;
@@ -95,6 +117,9 @@ export class ResultSubscene extends Subscene {
 	 */
 	showContent(): void {
 		this.scoreValue = gameUtil.getGameScore();
+		if (atsumaru) {
+			atsumaru.experimental.scoreboards.setRecord(boardId, this.scoreValue);
+		}
 		this.scoreLabel.hide();
 		entityUtil.showEntity(this);
 	}
@@ -164,6 +189,7 @@ export class ResultSubscene extends Subscene {
 	 * ロール演出の終了時用
 	 */
 	private onRollEnd(): void {
+		this.titleButtonSprite.show();
 		audioUtil.stop(CommonSoundInfo.seSet.rollResult);
 		audioUtil.play(CommonSoundInfo.seSet.rollResultFinish);
 		this.isRolling = false;
@@ -171,6 +197,9 @@ export class ResultSubscene extends Subscene {
 		if (commonDefine.ENABLE_RETRY) {
 			// リトライ操作を受け付ける場合
 			this.scene.pointDownCapture.handle(this, this.onTouch);
+		}
+		if (atsumaru) {
+			atsumaru.experimental.scoreboards.display(boardId);
 		}
 	}
 

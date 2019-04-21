@@ -109,6 +109,7 @@ export class MainSceneController extends SceneController {
 		audioUtil.addAssetIdsFromSoundInfoMap(CommonSoundInfo, assetIds);
 		audioUtil.addAssetIdsFromSoundInfoMap(SoundInfo, assetIds);
 		gameUtil.addAssetIdsFromMiscAssetInfoMap(MiscAssetInfo, assetIds);
+		assetIds.push("title_button");
 
 		// console.log("createScene: assetIds:"+assetIds.join(",")+".");
 		const scene = new g.Scene({ game: _game, assetIds: assetIds });
@@ -323,7 +324,7 @@ export class MainSceneController extends SceneController {
 			if (CommonParameterReader.isInitialSceneGame) {
 				this.changeSubscene(this.descriptionSubscene);
 			} else {
-				this.changeSubscene(this.informationSubscene);
+				this.changeSubscene(this.titleSubscene);
 			}
 		}
 	}
